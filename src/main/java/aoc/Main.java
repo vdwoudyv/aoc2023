@@ -5,6 +5,7 @@ import aoc.day2.Day2;
 import aoc.day3.Day3;
 import aoc.day4.Day4;
 import aoc.day5.Day5;
+import aoc.day6.Day6;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class Main {
                 /*new Day1(),
                 new Day2(),
                 new Day3(),
-                new Day4(),*/
-                new Day5()
+                new Day4(),
+                new Day5()*/
+                new Day6()
         );
         boolean testMode = false;
 
