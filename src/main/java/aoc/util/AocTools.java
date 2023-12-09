@@ -14,15 +14,19 @@ public class AocTools {
 
     /**
      * Reads the contents of the input file into an array of strings
-     * @param test whether you want the inputfile (Input.txt) or the testfile (TestInput.txt). Always from the folder
+     * @param test whether you want the inputfile (Input.txt) or the testfile (TestInput1.txt). Always from the folder
      *             of the calling class
      * @param requester the requester of the file. Used to determine the desired location of the file.
      * @return the contents of the file in a list.
      */
     public static List<String> read(boolean test, Object requester) {
+        return read(test ? "TestInput.txt" : "Input.txt", requester);
+    }
+
+    public static List<String> read(String givenFileName, Object requester) {
         String name = requester.getClass().getCanonicalName();
         String fileName = "src/main/java/" + name.substring(0, name.lastIndexOf(".")).replaceAll("\\.", "/")
-                + "/" + (test? "TestInput.txt" : "Input.txt");
+                + "/" + givenFileName;
         try (Stream<String> content = Files.lines(Path.of(fileName))) {
             return content.collect(Collectors.toList());
         } catch (IOException e) {

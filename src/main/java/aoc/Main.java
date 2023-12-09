@@ -6,27 +6,43 @@ import aoc.day3.Day3;
 import aoc.day4.Day4;
 import aoc.day5.Day5;
 import aoc.day6.Day6;
+import aoc.day7.Day7;
+import aoc.day8.Day8;
+import aoc.day9.Day9;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
 
-    public static void main(String[] args) {
-        List<Day> days = List.of(
-                /*new Day1(),
-                new Day2(),
-                new Day3(),
-                new Day4(),
-                new Day5()*/
-                new Day6()
-        );
-        boolean testMode = false;
+    public final static boolean TEST = false;
+    public final static boolean PRINT_ALL = false;
 
-        for (Day d: days) {
-            System.out.println(d.getClass().getSimpleName());
-            System.out.println("Part One: " + d.runPartOne(testMode));
-            System.out.println("Part Two: " + d.runPartTwo(testMode));
+    public static void main(String[] args) {
+        List<Day> allDays = getAllDays();
+        if (PRINT_ALL) {
+            for (Day d: allDays) {
+                System.out.println(d.getClass().getSimpleName());
+                System.out.println("Part One: " + d.runPartOne(TEST));
+                System.out.println("Part Two: " + d.runPartTwo(TEST));
+
+            }
+        } else {
+            System.out.println("Part One: " + allDays.get(allDays.size()-1).runPartOne(TEST));
+            System.out.println("Part Two: " + allDays.get(allDays.size()-1).runPartTwo(TEST));
         }
+     }
+
+    public static List<Day> getAllDays() {
+        ArrayList<Day> days = new ArrayList<>();
+        for (int i = 0; i < 26; i++) {
+            try {
+                days.add((Day) Main.class.getClassLoader().loadClass("aoc.day" + (i+1) + ".Day" + (i+1)).getDeclaredConstructor().newInstance());
+            } catch (Exception e) {
+                break;
+            }
+        }
+        return days;
     }
 }
