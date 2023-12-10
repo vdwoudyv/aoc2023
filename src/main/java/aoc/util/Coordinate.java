@@ -22,6 +22,20 @@ public record Coordinate(int x, int y) {
         return x() == other.x();
     }
 
+    /**
+     * Returns whether the other coordinate is to the south, north, east or west of this coordinate where
+     * the x axis increases to the east, and the y axis increases to the south.
+     */
+    public Direction compare(Coordinate other) {
+        if (sameRow(other)) {
+            return x() < other.x() ? Direction.EAST : Direction.WEST;
+        } else if (sameColumn(other)) {
+            return y() < other.y() ? Direction.SOUTH : Direction.NORTH;
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public String toString() {
         return "[" + x + ", " + y + "]";
