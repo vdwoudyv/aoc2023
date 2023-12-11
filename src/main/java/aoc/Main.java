@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Main {
 
-    public final static boolean TEST = false;
+    public final static boolean TEST = true;
     public final static boolean PRINT_ALL = false;
 
     public static void main(String[] args) {
