@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Main {
 
-    public final static boolean TEST = true;
+    public final static boolean TEST = false;
     public final static boolean PRINT_ALL = false;
 
     public static void main(String[] args) {
@@ -24,13 +24,14 @@ public class Main {
         if (PRINT_ALL) {
             for (Day d: allDays) {
                 System.out.println(d.getClass().getSimpleName());
-                System.out.println("Part One: " + d.runPartOne(TEST));
-                System.out.println("Part Two: " + d.runPartTwo(TEST));
+                System.out.println("Part One: " + d.runPartOne(d.forceTest() || TEST));
+                System.out.println("Part Two: " + d.runPartTwo(d.forceTest() || TEST));
 
             }
         } else {
-            System.out.println("Part One: " + allDays.get(allDays.size()-1).runPartOne(TEST));
-            System.out.println("Part Two: " + allDays.get(allDays.size()-1).runPartTwo(TEST));
+            Day d = allDays.get(allDays.size()-1);
+            System.out.println("Part One: " + d.runPartOne(d.forceTest() || TEST));
+            System.out.println("Part Two: " + d.runPartTwo(d.forceTest() || TEST));
         }
      }
 
