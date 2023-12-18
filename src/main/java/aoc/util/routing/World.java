@@ -1,8 +1,6 @@
 package aoc.util.routing;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class World<T extends Node> {
 
@@ -12,6 +10,9 @@ public class World<T extends Node> {
         this.nodes = nodes;
     }
 
+    /**
+     * Rather naive shortest path implementation
+     */
     public List<Edge> getRoute(T start, T stop) {
         List<Edge> edges = new ArrayList<>();
         for (Node n: nodes) {
@@ -40,6 +41,59 @@ public class World<T extends Node> {
         }
         return edges;
     }
+
+
+    /**
+     * Standard dijkstra
+     */
+    public List<Edge> getRouteDs(T start, T stop) {
+        Set<Node> knownShortestPaths = new HashSet<>();
+        List<Node> knownPaths = new ArrayList<>();
+
+        // Initial Set
+        start.setBestDistanceToOrigin(0);
+        knownShortestPaths.add(start);
+        for (Edge e: start.getOutgoingEdges()) {
+            Node neighbour = e.getTo();
+            neighbour.setBestDistanceToOrigin(e.getWeight());
+            knownPaths.add(neighbour);
+        }
+
+        // main loop
+        while (!knownPaths.isEmpty()) {
+            knownPaths.sort((n1, n2) -> (int) (n1.getBestDistanceToOrigin() - n2.getBestDistanceToOrigin()));
+            Node next = knownPaths.remove(0);
+            knownShortestPaths.add(next);
+            for (Edge e: next.getOutgoingEdges()) {
+                Node neighbour = e.getTo();
+
+                if (!knownShortestPaths.contains(neighbour)) {
+                    long newDistance = Math.min(next.getBestDistanceToOrigin() + e.getWeight(), neighbour.getBestDistanceToOrigin());
+                    neighbour.setBestDistanceToOrigin(newDistance);
+                    if (!knownPaths.contains(neighbour)) {
+                        knownPaths.add(neighbour);
+                    }
+                }
+            }
+        }
+        List<Edge> edges = new ArrayList<>();
+        Node current = stop;
+        while (current != start) {
+            Optional<Edge> relevant = current.getIncomingEdges().stream()
+                    .filter(e->e.getFrom().getBestDistanceToOrigin() + e.getWeight() == e.getTo().getBestDistanceToOrigin())
+                    .findFirst();
+            if (relevant.isPresent()) {
+                edges.add(0, relevant.get());
+                current = relevant.get().getFrom();
+            } else {
+                throw new RuntimeException("Unknown edge");
+            }
+        }
+        return edges;
+    }
+
+
+
 
     public List<T> getNodes() {
         return nodes;
@@ -93,6 +147,12 @@ public class World<T extends Node> {
                 toRemove.removeEdge(out);
                 out.getTo().removeAllConnectionsWith(toRemove);
             }
+        }
+    }
+
+    public void reset() {
+        for (Node n: nodes) {
+            n.reset();
         }
     }
 }

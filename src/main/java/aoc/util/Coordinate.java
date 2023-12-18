@@ -44,4 +44,12 @@ public record Coordinate(int x, int y) {
     public String toString() {
         return "[" + x + ", " + y + "]";
     }
+
+    public boolean isInBounds(int worldWidth, int worldHeight) {
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
