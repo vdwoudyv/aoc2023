@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Traversal {
 
-    public List<List<Pipe>> network = new ArrayList<>();
+    public List<List<Pipe>> network;
     private List<Coordinate> coordinates = new ArrayList<>();
 
     public Traversal(List<List<Pipe>> network) {
