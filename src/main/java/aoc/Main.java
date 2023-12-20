@@ -12,6 +12,7 @@ import aoc.day9.Day9;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -29,9 +30,16 @@ public class Main {
 
             }
         } else {
-            Day d = allDays.get(allDays.size()-1);
-            System.out.println("Part One: " + d.runPartOne(d.forceTest() || TEST));
-            System.out.println("Part Two: " + d.runPartTwo(d.forceTest() || TEST));
+            Day latest = allDays.get(allDays.size()-1);
+            List<Day> toPrint = new ArrayList<>(allDays.stream().filter(Day::mustPrint).toList());
+            if (!toPrint.contains(latest)) {
+                toPrint.add(latest);
+            }
+            for (Day d: toPrint) {
+                System.out.println(d.getClass().getSimpleName());
+                System.out.println("\tPart One: " + d.runPartOne(d.forceTest() || TEST));
+                System.out.println("\tPart Two: " + d.runPartTwo(d.forceTest() || TEST));
+            }
         }
      }
 

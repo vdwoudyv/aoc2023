@@ -46,7 +46,7 @@ public class Field {
                 TunnelType newType = i == 0 ? TunnelType.fromTo(tunnel.getOutDirection(), direction) : TunnelType.fromTo(direction, tunnel.getOutDirection());
                 tunnel.setType(newType);
             } else {
-                addTunnel(new Tunnel(current, t, color, direction));
+                addTunnel(new Tunnel(current, t, color, direction,1));
             }
         }
         return current;
@@ -56,7 +56,7 @@ public class Field {
         if (tunnels.isEmpty()) {
             tunnel.markAsStart();
         }
-        tunnels.put(tunnel.getLocation(), tunnel);
+        tunnels.put(tunnel.getStartLocation(), tunnel);
         normalized = false;
     }
 
@@ -65,14 +65,14 @@ public class Field {
             return;
         }
         Map<Coordinate, Tunnel> newMap = new HashMap<>();
-        List<Coordinate> locations = tunnels.values().stream().map(Tunnel::getLocation).toList();
+        List<Coordinate> locations = tunnels.values().stream().map(Tunnel::getStartLocation).toList();
         int minX = locations.stream().mapToInt(Coordinate::x).min().orElse(0);
         int minY = locations.stream().mapToInt(Coordinate::y).min().orElse(0);
         int maxX = locations.stream().mapToInt(Coordinate::x).max().orElse(0);
         int maxY = locations.stream().mapToInt(Coordinate::y).max().orElse(0);
         for (Tunnel t : tunnels.values()) {
               t.translate(-minX, -minY);
-              newMap.put(t.getLocation(), t);
+              newMap.put(t.getStartLocation(), t);
             }
         dimension = new Tuple<>(maxX - minX, maxY - minY);
         tunnels = newMap;
@@ -137,7 +137,7 @@ public class Field {
 
         String[][] field = new String[dimension.second() + 1][dimension.first() + 1];
         for (Tunnel t : tunnels.values()) {
-            field[t.getLocation().y()][t.getLocation().x()] =  t.getType().getSymbol();
+            field[t.getStartLocation().y()][t.getStartLocation().x()] =  t.getType().getSymbol();
         }
         for (Coordinate c : getEnclosedPoints()) {
             field[c.y()][c.x()] = "X";

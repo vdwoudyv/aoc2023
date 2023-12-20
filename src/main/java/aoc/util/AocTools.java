@@ -1,6 +1,7 @@
 package aoc.util;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -129,6 +130,32 @@ public class AocTools {
         }
         if (y < input.size()-1) {
             result.add(input.get(y+1).get(x));
+        }
+        return result;
+    }
+
+    public static BigDecimal leastCommonMultiple(List<BigDecimal> values) {
+        BigDecimal acc = leastCommonMultiple(values.get(0), values.get(1));
+        for (int i = 2; i < values.size(); i++) {
+            acc = leastCommonMultiple(acc, values.get(i));
+        }
+        return acc;
+    }
+
+    public static long leastCommonMultipleLong(List<Long> values) {
+        return leastCommonMultiple(values.stream().map(l -> new BigDecimal("" + l)).collect(Collectors.toList())).longValue();
+    }
+
+
+    private static BigDecimal leastCommonMultiple(BigDecimal first, BigDecimal second) {
+        if (first == BigDecimal.ZERO || second == BigDecimal.ZERO) {
+            return BigDecimal.ZERO;
+        }
+        BigDecimal highest = first.compareTo(second) <= 0 ? second : first;
+        BigDecimal lowest = first.compareTo(second) <= 0 ? first : second;
+        BigDecimal result = highest;
+        while (result.remainder(lowest).compareTo(BigDecimal.ZERO) != 0) {
+            result = result.add(highest);
         }
         return result;
     }

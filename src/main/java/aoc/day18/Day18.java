@@ -11,6 +11,12 @@ public class Day18 implements Day {
         return false;
     }
 
+
+    @Override
+    public boolean mustPrint() {
+        return true;
+    }
+
     @Override
     public String runPartOne(boolean testInput) {
         Field input = new Field(AocTools.read(testInput, this));
@@ -19,6 +25,7 @@ public class Day18 implements Day {
 
     @Override
     public String runPartTwo(boolean testInput) {
-        return null;
+        Field input = new Field(AocTools.read(testInput, this));
+        return input.toString();
     }
 }
